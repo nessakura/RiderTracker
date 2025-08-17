@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rider Hub - Food Delivery Counter</title>
+    <title>Rider Hub - Multi-Company</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-green: #00B14F;
+            --grab-green: #00B14F;
+            --lineman-mint: #00B4A9;
             --accent-orange: #FF6B00;
             --dark-text: #2C3E50;
             --light-grey-bg: #F7F9FA;
@@ -39,7 +40,7 @@
             background: var(--white);
             padding: 20px;
             border-radius: 25px;
-            box-shadow: 0 10px 30px var(--shadow-color);
+            box-shadow: 0 10px B30px var(--shadow-color);
             text-align: center;
             max-width: 420px;
             width: 100%;
@@ -48,7 +49,7 @@
         }
         
         .header {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         
         .title {
@@ -64,26 +65,53 @@
         }
         
         .counter-display {
-            background: linear-gradient(135deg, var(--primary-green) 0%, #00D26A 100%);
+            background: linear-gradient(135deg, #485461 0%, #28313b 100%);
             color: white;
-            padding: 25px 20px;
+            padding: 20px;
             border-radius: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 20px rgba(0, 177, 79, 0.25);
+            margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         
         .counter-label {
             font-size: 16px;
             margin-bottom: 5px;
-            opacity: 0.9;
+            opacity: 0.8;
         }
         
         .counter-number {
             font-size: 48px;
             font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
             line-height: 1.1;
         }
+
+        .individual-counters {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            padding: 15px 0;
+            background: #f1f2f6;
+            border-radius: 15px;
+        }
+
+        .counter-item {
+            text-align: center;
+        }
+
+        .counter-item-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #7f8c8d;
+        }
+
+        .counter-item-number {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        #lineman-count { color: var(--lineman-mint); }
+        #grab-count { color: var(--grab-green); }
         
         .buttons {
             display: flex;
@@ -101,228 +129,94 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease-in-out;
-            position: relative;
-            overflow: hidden;
-            text-transform: none;
+            color: white;
             font-family: 'Kanit', sans-serif;
         }
-        
-        .btn:hover {
-            transform: translateY(-3px);
+
+        .btn:hover { transform: translateY(-3px); }
+        .btn:active { transform: translateY(-1px); }
+
+        .company-buttons {
+            display: flex;
+            gap: 15px;
         }
-        
-        .btn:active {
-            transform: translateY(-1px);
+        .company-buttons .btn {
+            flex: 1;
+            font-size: 20px;
+            padding: 20px 10px;
         }
 
-        .btn-add {
-            background: linear-gradient(135deg, var(--accent-orange) 0%, #FF893B 100%);
-            color: white;
-            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
-            font-size: 22px;
-            padding: 20px;
+        .btn-lineman {
+            background: linear-gradient(135deg, var(--lineman-mint) 0%, #00DBCB 100%);
+            box-shadow: 0 8px 20px rgba(0, 180, 169, 0.3);
         }
-        
-        .btn-add:hover {
-            box-shadow: 0 12px 25px rgba(255, 107, 0, 0.4);
+        .btn-lineman:hover { box-shadow: 0 12px 25px rgba(0, 180, 169, 0.4); }
+
+        .btn-grab {
+            background: linear-gradient(135deg, var(--grab-green) 0%, #00D26A 100%);
+            box-shadow: 0 8px 20px rgba(0, 177, 79, 0.3);
         }
-        
-        .btn-secondary-group {
-            display: flex;
-            gap: 10px;
-        }
+        .btn-grab:hover { box-shadow: 0 12px 25px rgba(0, 177, 79, 0.4); }
 
         .btn-reset {
             background: #bdc3c7;
             color: var(--dark-text);
             box-shadow: 0 6px 15px rgba(189, 195, 199, 0.4);
-            flex-grow: 1;
         }
-        
-        .btn-reset:hover {
-             background: #a4acb1;
-        }
-
-        .btn-clear-all {
-            background: transparent;
-            color: var(--danger-red);
-            font-size: 14px;
-            padding: 10px;
-            box-shadow: none;
-            border: 2px solid #f1c40f;
-            display: none; /* ซ่อนไว้ก่อน อาจจะเปิดใช้ทีหลัง */
-        }
+        .btn-reset:hover { background: #a4acb1; }
         
         .stats {
             background: var(--light-grey-bg);
             padding: 20px;
             border-radius: 20px;
-            margin-bottom: 15px;
         }
         
-        .stats-title {
-            font-size: 18px;
-            color: var(--dark-text);
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-        
-        .goal-setting {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            align-items: center;
-        }
-        
-        #goalInput {
-            flex: 1;
-            padding: 14px;
-            border: 2px solid #dfe6e9;
-            border-radius: 12px;
-            font-size: 16px;
-            text-align: center;
-            outline: none;
-            transition: all 0.3s;
-            background: var(--white);
-            font-family: 'Kanit', sans-serif;
-        }
-        
-        #goalInput:focus {
-            border-color: var(--primary-green);
-            transform: scale(1.02);
-        }
-        
-        .btn-set-goal {
-            padding: 14px 18px;
-            background: var(--dark-text);
-            color: white;
-            border-radius: 12px;
-            font-size: 14px;
-        }
-        
-        .btn-set-goal:hover {
-            background: #4a637b;
-        }
-        
-        .goal-text {
-            font-size: 16px;
-            color: #7f8c8d;
-            margin-bottom: 10px;
-        }
-
-        .goal-text strong {
-            font-size: 20px;
-            color: var(--dark-text);
-            font-weight: 700;
-        }
-        
-        .progress-bar {
-            background: #dfe6e9;
-            height: 16px;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 10px;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #FFB347 0%, var(--accent-orange) 100%);
-            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 10px;
-        }
-        
-        .progress-fill.complete {
-            background: linear-gradient(90deg, #56ab2f 0%, var(--primary-green) 100%);
-            animation: progressGlow 1.5s ease-in-out infinite alternate;
-        }
-        
-        @keyframes progressGlow {
-            from { box-shadow: 0 0 5px rgba(86, 171, 47, 0.5); }
-            to { box-shadow: 0 0 15px rgba(86, 171, 47, 0.8); }
-        }
-        
-        .goal-status {
-            font-size: 16px;
-            color: #7f8c8d;
-            font-weight: 500;
-        }
-        
-        .goal-status.success {
-            color: var(--primary-green);
-            font-weight: bold;
-        }
-        
-        .last-updated {
-            color: #95a5a6;
-            font-size: 12px;
-            margin-top: 20px;
-        }
-        
-        .success-animation {
-            animation: pulse 0.5s ease-in-out;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
-        
-        .celebration {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 60px;
-            pointer-events: none;
-            animation: celebrate 1s ease-out forwards;
-            z-index: 1000;
-        }
-        
-        @keyframes celebrate {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
-        }
-        
-        @media (max-width: 480px) {
-            body { padding: 5px; }
-            .container { padding: 15px; margin: 5px; }
-            .title { font-size: 22px; }
-            .counter-number { font-size: 42px; }
-            .btn-add { padding: 18px; font-size: 20px; }
-            .btn-reset { padding: 16px; font-size: 16px; }
-        }
+        /* --- Other styles remain the same --- */
+        .stats-title{font-size:18px;color:var(--dark-text);margin-bottom:15px;font-weight:600}.goal-setting{display:flex;gap:10px;margin-bottom:20px;align-items:center}#goalInput{flex:1;padding:14px;border:2px solid #dfe6e9;border-radius:12px;font-size:16px;text-align:center;outline:0;transition:all .3s;background:var(--white);font-family:'Kanit',sans-serif}#goalInput:focus{border-color:var(--grab-green);transform:scale(1.02)}.btn-set-goal{padding:14px 18px;background:var(--dark-text);color:white;border-radius:12px;font-size:14px}.btn-set-goal:hover{background:#4a637b}.goal-text{font-size:16px;color:#7f8c8d;margin-bottom:10px}.goal-text strong{font-size:20px;color:var(--dark-text);font-weight:700}.progress-bar{background:#dfe6e9;height:16px;border-radius:10px;overflow:hidden;margin-bottom:10px}.progress-fill{height:100%;background:linear-gradient(90deg,#FFB347 0%,var(--accent-orange) 100%);transition:width .8s cubic-bezier(.4,0,.2,1);border-radius:10px}.progress-fill.complete{background:linear-gradient(90deg,#56ab2f 0%,var(--grab-green) 100%);animation:progressGlow 1.5s ease-in-out infinite alternate}@keyframes progressGlow{from{box-shadow:0 0 5px rgba(86,171,47,.5)}to{box-shadow:0 0 15px rgba(86,171,47,.8)}}.goal-status{font-size:16px;color:#7f8c8d;font-weight:500}.goal-status.success{color:var(--grab-green);font-weight:700}.last-updated{color:#95a5a6;font-size:12px;margin-top:20px}.success-animation{animation:pulse .5s ease-in-out}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}.celebration{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;pointer-events:none;animation:celebrate 1s ease-out forwards;z-index:1000}@keyframes celebrate{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)}}@media (max-width:480px){body{padding:5px}.container{padding:15px;margin:5px}.title{font-size:22px}.counter-number{font-size:42px}.btn-reset{padding:16px;font-size:16px}}
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">🥡 Rider Hub</h1>
-            <p class="subtitle">คู่หูไรเดอร์สายฟู้ด</p>
+            <h1 class="title">🛵 Rider Hub</h1>
+            <p class="subtitle">บันทึกออเดอร์รายวัน</p>
         </div>
         
         <div class="counter-display" id="counterDisplay">
-            <div class="counter-label">ออเดอร์วันนี้</div>
+            <div class="counter-label">รวมออเดอร์วันนี้</div>
             <div class="counter-number" id="counterNumber">0</div>
+        </div>
+
+        <div class="individual-counters">
+            <div class="counter-item">
+                <div class="counter-item-label">LINEMAN</div>
+                <div class="counter-item-number" id="lineman-count">0</div>
+            </div>
+            <div class="counter-item">
+                <div class="counter-item-label">GRAB</div>
+                <div class="counter-item-number" id="grab-count">0</div>
+            </div>
         </div>
         
         <div class="buttons">
-            <button class="btn btn-add" onclick="addDelivery()">
-                ✔ ปิดงาน +1
-            </button>
-            <div class="btn-secondary-group">
-                <button class="btn btn-reset" onclick="resetCounter()">
-                    🔄 รีเซ็ต
+            <div class="company-buttons">
+                <button class="btn btn-lineman" onclick="addOrder('lineman')">
+                    LINEMAN +1
+                </button>
+                <button class="btn btn-grab" onclick="addOrder('grab')">
+                    GRAB +1
                 </button>
             </div>
+            <button class="btn btn-reset" onclick="resetCounter()">
+                🔄 รีเซ็ตทั้งหมด
+            </button>
         </div>
         
         <div class="stats">
             <div class="stats-title">🎯 เป้าหมายออเดอร์</div>
             <div class="goal-setting">
                 <input type="number" id="goalInput" placeholder="ใส่เป้าหมาย" min="1" max="999" value="20">
-                <button class="btn btn-set-goal btn" onclick="setGoal()">ตั้งเป้า</button>
+                <button class="btn-set-goal btn" onclick="setGoal()">ตั้งเป้า</button>
             </div>
             <div class="goal-progress">
                 <div class="goal-text">
@@ -332,7 +226,7 @@
                     <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
                 </div>
                 <div class="goal-status" id="goalStatus">
-                    เหลืออีก <span id="remaining">20</span>
+                    เหลืออีก 20
                 </div>
             </div>
         </div>
@@ -343,17 +237,17 @@
     </div>
 
     <script>
-        // โค้ด JavaScript ส่วนนี้ยังคงใช้ตรรกะเดิมจากที่คุณให้มา
-        // ไม่จำเป็นต้องแก้ไขส่วนนี้
         const initialData = {
-            today: 0,
-            total: 0,
+            // โครงสร้างข้อมูลใหม่เพื่อรองรับหลายค่าย
+            counts: {
+                total: 0,
+                lineman: 0,
+                grab: 0
+            },
             lastDate: new Date().toDateString(),
-            startDate: new Date().toDateString(),
-            history: {},
             dailyGoal: 20
         };
-        let deliveryData = { ...initialData };
+        let deliveryData = JSON.parse(JSON.stringify(initialData));
 
         function loadData() {
             try {
@@ -361,24 +255,26 @@
                 if (saved) {
                     const parsedData = JSON.parse(saved);
                     const today = new Date().toDateString();
+                    
+                    // รีเซ็ตค่าเมื่อขึ้นวันใหม่
                     if (parsedData.lastDate !== today) {
-                        if (parsedData.today > 0) {
-                            parsedData.history[parsedData.lastDate] = parsedData.today;
-                        }
-                        parsedData.today = 0;
+                        parsedData.counts = { total: 0, lineman: 0, grab: 0 };
                         parsedData.lastDate = today;
                     }
-                    if (!parsedData.dailyGoal) {
-                        parsedData.dailyGoal = 20;
+
+                    // ตรวจสอบโครงสร้างข้อมูลใหม่
+                    if (!parsedData.counts) {
+                        // ถ้าเป็นข้อมูลเก่า ให้แปลงโครงสร้าง
+                        parsedData.counts = { total: parsedData.today || 0, lineman: 0, grab: 0 };
+                        delete parsedData.today; // ลบ property เก่าทิ้ง
                     }
+                    
                     deliveryData = parsedData;
-                } else {
-                    saveData();
                 }
             } catch (error) {
                 console.error('Error loading data:', error);
-                deliveryData = { ...initialData };
-                saveData();
+                // หาก error ให้ใช้ค่าเริ่มต้น
+                deliveryData = JSON.parse(JSON.stringify(initialData));
             }
             updateDisplay();
         }
@@ -388,25 +284,33 @@
                 localStorage.setItem('riderDeliveryData', JSON.stringify(deliveryData));
             } catch (error) {
                 console.error('Error saving data:', error);
-                alert('ไม่สามารถบันทึกข้อมูลได้');
             }
         }
 
-        function addDelivery() {
-            deliveryData.today++;
-            deliveryData.total++;
-            deliveryData.lastDate = new Date().toDateString();
-            
-            if (deliveryData.today === deliveryData.dailyGoal) {
-                setTimeout(() => {
-                    alert(`🏆 ยอดเยี่ยม! คุณทำตามเป้าหมายวันนี้สำเร็จแล้ว!`);
-                }, 500);
+        // ฟังก์ชันกลางสำหรับเพิ่มออเดอร์
+        function addOrder(company) {
+            if (deliveryData.counts.hasOwnProperty(company)) {
+                deliveryData.counts[company]++;
+                deliveryData.counts.total++;
+
+                // เรียกฟังก์ชันจัดการหลังเพิ่มออเดอร์
+                handleOrderAdded();
+            }
+        }
+
+        // ฟังก์ชันจัดการ animation และการบันทึกข้อมูล
+        function handleOrderAdded() {
+            // เช็คเป้าหมาย
+            if (deliveryData.counts.total === deliveryData.dailyGoal) {
+                setTimeout(() => alert(`🏆 ยอดเยี่ยม! คุณทำตามเป้าหมายวันนี้สำเร็จแล้ว!`), 500);
             }
             
-            if (deliveryData.today % 10 === 0 && deliveryData.today > 0) {
+            // Celebration ทุกๆ 10 ออเดอร์
+            if (deliveryData.counts.total > 0 && deliveryData.counts.total % 10 === 0) {
                 setTimeout(() => showCelebration('🎉'), 200);
             }
             
+            // Animation
             const display = document.getElementById('counterDisplay');
             display.classList.add('success-animation');
             setTimeout(() => display.classList.remove('success-animation'), 500);
@@ -416,8 +320,8 @@
         }
 
         function resetCounter() {
-            if (confirm('คุณต้องการรีเซ็ตออเดอร์วันนี้เป็น 0 หรือไม่?')) {
-                deliveryData.today = 0;
+            if (confirm('คุณต้องการรีเซ็ตออเดอร์ทั้งหมดของวันนี้เป็น 0 หรือไม่?')) {
+                deliveryData.counts = { total: 0, lineman: 0, grab: 0 };
                 updateDisplay();
                 saveData();
                 showCelebration('🔄');
@@ -427,35 +331,38 @@
         function setGoal() {
             const goalInput = document.getElementById('goalInput');
             const newGoal = parseInt(goalInput.value);
-            
             if (newGoal && newGoal > 0 && newGoal <= 999) {
                 deliveryData.dailyGoal = newGoal;
+                showCelebration('🎯');
                 updateDisplay();
                 saveData();
-                showCelebration('🎯');
-                const goalStatus = document.getElementById('goalStatus');
-                goalStatus.textContent = `✅ ตั้งเป้าหมาย ${newGoal} ออเดอร์แล้ว!`;
-                goalStatus.style.color = 'var(--primary-green)';
-                setTimeout(() => updateDisplay(), 2000);
             } else {
                 alert('กรุณาใส่เป้าหมายระหว่าง 1-999');
-                goalInput.value = deliveryData.dailyGoal;
             }
         }
 
         function updateDisplay() {
-            document.getElementById('counterNumber').textContent = deliveryData.today;
-            document.getElementById('currentGoal').textContent = deliveryData.dailyGoal;
-            document.getElementById('goalInput').value = deliveryData.dailyGoal;
+            // อัปเดตยอดรวม
+            document.getElementById('counterNumber').textContent = deliveryData.counts.total;
+
+            // อัปเดตยอดแต่ละค่าย
+            document.getElementById('lineman-count').textContent = deliveryData.counts.lineman;
+            document.getElementById('grab-count').textContent = deliveryData.counts.grab;
             
-            const progress = Math.min((deliveryData.today / deliveryData.dailyGoal) * 100, 100);
+            // อัปเดตเป้าหมาย
+            const goal = deliveryData.dailyGoal;
+            const total = deliveryData.counts.total;
+            document.getElementById('currentGoal').textContent = goal;
+            document.getElementById('goalInput').value = goal;
+            
+            const progress = Math.min((total / goal) * 100, 100);
             const progressFill = document.getElementById('progressFill');
             const goalStatus = document.getElementById('goalStatus');
-            const remaining = Math.max(0, deliveryData.dailyGoal - deliveryData.today);
+            const remaining = Math.max(0, goal - total);
             
             progressFill.style.width = progress + '%';
             
-            if (deliveryData.today >= deliveryData.dailyGoal) {
+            if (total >= goal) {
                 progressFill.classList.add('complete');
                 goalStatus.innerHTML = '🎉 สำเร็จตามเป้า!';
                 goalStatus.classList.add('success');
@@ -463,7 +370,6 @@
                 progressFill.classList.remove('complete');
                 goalStatus.innerHTML = `เหลืออีก <strong>${remaining}</strong>`;
                 goalStatus.classList.remove('success');
-                goalStatus.style.color = ''; // Reset color
             }
             
             const now = new Date();
@@ -481,10 +387,7 @@
 
         window.onload = function() {
             loadData();
-            setInterval(saveData, 30000);
-            if (typeof Storage === "undefined") {
-                alert("เบราว์เซอร์ของคุณไม่รองรับการจัดเก็บข้อมูล");
-            }
+            setInterval(saveData, 30000); // Auto-save
         };
     </script>
 </body>
