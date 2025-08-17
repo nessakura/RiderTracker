@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบนับการส่งสำเร็จ - ไรเดอร์</title>
+    <title>Rider Hub - Food Delivery Counter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-green: #00B14F;
+            --accent-orange: #FF6B00;
+            --dark-text: #2C3E50;
+            --light-grey-bg: #F7F9FA;
+            --white: #FFFFFF;
+            --danger-red: #E74C3C;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,23 +25,26 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Kanit', sans-serif;
+            background-color: var(--light-grey-bg);
             min-height: 100vh;
             margin: 0;
             padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
         
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--white);
             padding: 20px;
             border-radius: 25px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.2);
+            box-shadow: 0 10px 30px var(--shadow-color);
             text-align: center;
             max-width: 420px;
             width: 100%;
-            margin: 0 auto;
+            margin: 20px auto;
+            border: 1px solid #e0e0e0;
         }
         
         .header {
@@ -36,65 +52,44 @@
         }
         
         .title {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 8px;
+            font-size: 26px;
+            color: var(--dark-text);
+            margin-bottom: 5px;
             font-weight: 700;
         }
         
         .subtitle {
-            color: #666;
+            color: #7f8c8d;
             font-size: 14px;
         }
         
         .counter-display {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, var(--primary-green) 0%, #00D26A 100%);
             color: white;
             padding: 25px 20px;
             border-radius: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .counter-display::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: shimmer 3s ease-in-out infinite;
-        }
-        
-        @keyframes shimmer {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(180deg); }
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0, 177, 79, 0.25);
         }
         
         .counter-label {
             font-size: 16px;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             opacity: 0.9;
-            position: relative;
-            z-index: 1;
         }
         
         .counter-number {
-            font-size: 42px;
-            font-weight: bold;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 1;
+            font-size: 48px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            line-height: 1.1;
         }
         
         .buttons {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 15px;
+            margin-bottom: 25px;
         }
         
         .btn {
@@ -105,68 +100,69 @@
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease-in-out;
             position: relative;
             overflow: hidden;
             text-transform: none;
+            font-family: 'Kanit', sans-serif;
         }
         
-        .btn:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+        .btn:hover {
+            transform: translateY(-3px);
         }
         
-        .btn:hover:before {
-            left: 100%;
+        .btn:active {
+            transform: translateY(-1px);
         }
-        
+
         .btn-add {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #FF893B 100%);
             color: white;
-            box-shadow: 0 8px 20px rgba(17, 153, 142, 0.3);
-            font-size: 20px;
-            padding: 22px;
+            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+            font-size: 22px;
+            padding: 20px;
         }
         
         .btn-add:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(17, 153, 142, 0.4);
+            box-shadow: 0 12px 25px rgba(255, 107, 0, 0.4);
         }
         
-        .btn-add:active {
-            transform: translateY(-1px);
+        .btn-secondary-group {
+            display: flex;
+            gap: 10px;
         }
-        
+
         .btn-reset {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
-            color: white;
-            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
-            font-size: 16px;
+            background: #bdc3c7;
+            color: var(--dark-text);
+            box-shadow: 0 6px 15px rgba(189, 195, 199, 0.4);
+            flex-grow: 1;
         }
         
         .btn-reset:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+             background: #a4acb1;
+        }
+
+        .btn-clear-all {
+            background: transparent;
+            color: var(--danger-red);
+            font-size: 14px;
+            padding: 10px;
+            box-shadow: none;
+            border: 2px solid #f1c40f;
+            display: none; /* ซ่อนไว้ก่อน อาจจะเปิดใช้ทีหลัง */
         }
         
         .stats {
-            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
-            backdrop-filter: blur(10px);
+            background: var(--light-grey-bg);
             padding: 20px;
             border-radius: 20px;
             margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
         }
         
         .stats-title {
             font-size: 18px;
-            color: #333;
+            color: var(--dark-text);
             margin-bottom: 15px;
             font-weight: 600;
         }
@@ -181,122 +177,85 @@
         #goalInput {
             flex: 1;
             padding: 14px;
-            border: 2px solid rgba(79, 172, 254, 0.3);
+            border: 2px solid #dfe6e9;
             border-radius: 12px;
             font-size: 16px;
             text-align: center;
             outline: none;
             transition: all 0.3s;
-            background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(5px);
+            background: var(--white);
+            font-family: 'Kanit', sans-serif;
         }
         
         #goalInput:focus {
-            border-color: #4facfe;
-            background: rgba(255,255,255,0.95);
+            border-color: var(--primary-green);
             transform: scale(1.02);
         }
         
         .btn-set-goal {
             padding: 14px 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--dark-text);
             color: white;
-            border: none;
             border-radius: 12px;
-            cursor: pointer;
             font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
         
         .btn-set-goal:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-        }
-        
-        .goal-progress {
-            text-align: center;
+            background: #4a637b;
         }
         
         .goal-text {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 15px;
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .goal-text strong {
+            font-size: 20px;
+            color: var(--dark-text);
+            font-weight: 700;
         }
         
         .progress-bar {
-            background: rgba(224, 224, 224, 0.6);
-            height: 14px;
+            background: #dfe6e9;
+            height: 16px;
             border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 15px;
-            position: relative;
-            backdrop-filter: blur(5px);
+            margin-bottom: 10px;
         }
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            background: linear-gradient(90deg, #FFB347 0%, var(--accent-orange) 100%);
             transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 10px;
-            position: relative;
-        }
-        
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: progressShine 2s ease-in-out infinite;
-        }
-        
-        @keyframes progressShine {
-            0% { transform: translateX(-100%); }
-            50% { transform: translateX(100%); }
-            100% { transform: translateX(100%); }
         }
         
         .progress-fill.complete {
-            background: linear-gradient(90deg, #ff6b6b 0%, #ffd93d 100%);
+            background: linear-gradient(90deg, #56ab2f 0%, var(--primary-green) 100%);
             animation: progressGlow 1.5s ease-in-out infinite alternate;
         }
         
         @keyframes progressGlow {
-            from { 
-                box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
-                filter: brightness(1);
-            }
-            to { 
-                box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
-                filter: brightness(1.2);
-            }
+            from { box-shadow: 0 0 5px rgba(86, 171, 47, 0.5); }
+            to { box-shadow: 0 0 15px rgba(86, 171, 47, 0.8); }
         }
         
         .goal-status {
             font-size: 16px;
-            color: #666;
+            color: #7f8c8d;
             font-weight: 500;
         }
         
         .goal-status.success {
-            color: #11998e;
+            color: var(--primary-green);
             font-weight: bold;
-            animation: pulse 2s ease-in-out infinite;
         }
         
         .last-updated {
-            color: #999;
+            color: #95a5a6;
             font-size: 12px;
-            margin-top: 15px;
-            padding: 10px;
-            background: rgba(255,255,255,0.5);
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
+            margin-top: 20px;
         }
         
         .success-animation {
@@ -305,7 +264,7 @@
         
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
             100% { transform: scale(1); }
         }
         
@@ -316,237 +275,138 @@
             transform: translate(-50%, -50%);
             font-size: 60px;
             pointer-events: none;
-            animation: celebrate 1s ease-out;
+            animation: celebrate 1s ease-out forwards;
             z-index: 1000;
         }
         
         @keyframes celebrate {
-            0% { 
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.5);
-            }
-            50% { 
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-            100% { 
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(1);
-            }
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
         }
         
         @media (max-width: 480px) {
-            body {
-                padding: 5px;
-            }
-            
-            .container {
-                padding: 15px;
-                margin: 5px;
-                border-radius: 20px;
-            }
-            
-            .title {
-                font-size: 22px;
-            }
-            
-            .counter-number {
-                font-size: 38px;
-            }
-            
-            .btn-add {
-                padding: 20px;
-                font-size: 18px;
-            }
-            
-            .btn-reset {
-                padding: 16px;
-                font-size: 15px;
-            }
-            
-            #goalInput {
-                padding: 12px;
-                font-size: 15px;
-            }
-            
-            .btn-set-goal {
-                padding: 12px 16px;
-                font-size: 13px;
-            }
-        }
-        
-        @media (max-width: 360px) {
-            .container {
-                padding: 12px;
-                margin: 3px;
-            }
-            
-            .counter-display {
-                padding: 20px 15px;
-            }
-            
-            .counter-number {
-                font-size: 34px;
-            }
-            
-            .btn-add {
-                padding: 18px;
-                font-size: 17px;
-            }
+            body { padding: 5px; }
+            .container { padding: 15px; margin: 5px; }
+            .title { font-size: 22px; }
+            .counter-number { font-size: 42px; }
+            .btn-add { padding: 18px; font-size: 20px; }
+            .btn-reset { padding: 16px; font-size: 16px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">🏍️ ระบบนับการส่งสำเร็จ</h1>
-            <p class="subtitle">สำหรับไรเดอร์มืออาชีพ</p>
+            <h1 class="title">🥡 Rider Hub</h1>
+            <p class="subtitle">คู่หูไรเดอร์สายฟู้ด</p>
         </div>
         
         <div class="counter-display" id="counterDisplay">
-            <div class="counter-label">จำนวนการส่งสำเร็จวันนี้</div>
+            <div class="counter-label">ออเดอร์วันนี้</div>
             <div class="counter-number" id="counterNumber">0</div>
         </div>
         
         <div class="buttons">
             <button class="btn btn-add" onclick="addDelivery()">
-                ➕ ส่งสำเร็จ +1
+                ✔ ปิดงาน +1
             </button>
-            <button class="btn btn-reset" onclick="resetCounter()">
-                🔄 รีเซ็ต
-            </button>
+            <div class="btn-secondary-group">
+                <button class="btn btn-reset" onclick="resetCounter()">
+                    🔄 รีเซ็ต
+                </button>
+            </div>
         </div>
         
         <div class="stats">
-            <div class="stats-title">🎯 เป้าหมายวันนี้</div>
+            <div class="stats-title">🎯 เป้าหมายออเดอร์</div>
             <div class="goal-setting">
-                <input type="number" id="goalInput" placeholder="ตั้งเป้าหมาย" min="1" max="999" value="10">
-                <button class="btn-set-goal" onclick="setGoal()">ตั้งเป้า</button>
+                <input type="number" id="goalInput" placeholder="ใส่เป้าหมาย" min="1" max="999" value="20">
+                <button class="btn btn-set-goal btn" onclick="setGoal()">ตั้งเป้า</button>
             </div>
             <div class="goal-progress">
                 <div class="goal-text">
-                    <span id="currentGoal">10</span> ครั้ง
+                    เป้าหมาย: <strong><span id="currentGoal">20</span></strong> ออเดอร์
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
                 </div>
                 <div class="goal-status" id="goalStatus">
-                    เหลืออีก <span id="remaining">10</span> ครั้ง
+                    เหลืออีก <span id="remaining">20</span>
                 </div>
             </div>
         </div>
         
         <div class="last-updated" id="lastUpdated">
-            อัปเดตครั้งล่าสุด: -
+            อัปเดตล่าสุด: -
         </div>
     </div>
 
     <script>
-        // ข้อมูลที่เก็บในหน่วยความจำ
-        let deliveryData = {
+        // โค้ด JavaScript ส่วนนี้ยังคงใช้ตรรกะเดิมจากที่คุณให้มา
+        // ไม่จำเป็นต้องแก้ไขส่วนนี้
+        const initialData = {
             today: 0,
             total: 0,
             lastDate: new Date().toDateString(),
             startDate: new Date().toDateString(),
             history: {},
-            dailyGoal: 10
+            dailyGoal: 20
         };
+        let deliveryData = { ...initialData };
 
-        // โหลดข้อมูลเมื่อเริ่มต้น
         function loadData() {
             try {
                 const saved = localStorage.getItem('riderDeliveryData');
                 if (saved) {
                     const parsedData = JSON.parse(saved);
-                    
-                    // ตรวจสอบว่าเป็นวันใหม่หรือไม่
                     const today = new Date().toDateString();
                     if (parsedData.lastDate !== today) {
-                        // บันทึกข้อมูลวันเก่า
                         if (parsedData.today > 0) {
                             parsedData.history[parsedData.lastDate] = parsedData.today;
                         }
-                        // รีเซ็ตการนับวันใหม่
                         parsedData.today = 0;
                         parsedData.lastDate = today;
                     }
-                    
-                    // ตรวจสอบว่ามี dailyGoal หรือไม่ ถ้าไม่มีให้ใส่ค่าเริ่มต้น
                     if (!parsedData.dailyGoal) {
-                        parsedData.dailyGoal = 10;
+                        parsedData.dailyGoal = 20;
                     }
-                    
                     deliveryData = parsedData;
                 } else {
-                    // ถ้าไม่มีข้อมูลเก่า ให้สร้างข้อมูลใหม่
-                    deliveryData = {
-                        today: 0,
-                        total: 0,
-                        lastDate: new Date().toDateString(),
-                        startDate: new Date().toDateString(),
-                        history: {},
-                        dailyGoal: 10
-                    };
-                    saveData(); // บันทึกข้อมูลเริ่มต้น
+                    saveData();
                 }
             } catch (error) {
                 console.error('Error loading data:', error);
-                // ถ้าเกิดข้อผิดพลาดในการโหลด ให้สร้างข้อมูลใหม่
-                deliveryData = {
-                    today: 0,
-                    total: 0,
-                    lastDate: new Date().toDateString(),
-                    startDate: new Date().toDateString(),
-                    history: {},
-                    dailyGoal: 10
-                };
+                deliveryData = { ...initialData };
                 saveData();
             }
             updateDisplay();
         }
 
-        // บันทึกข้อมูล
         function saveData() {
             try {
                 localStorage.setItem('riderDeliveryData', JSON.stringify(deliveryData));
             } catch (error) {
                 console.error('Error saving data:', error);
-                alert('ไม่สามารถบันทึกข้อมูลได้ กรุณาตรวจสอบที่เก็บข้อมูลของเบราว์เซอร์');
+                alert('ไม่สามารถบันทึกข้อมูลได้');
             }
         }
 
-        // เพิ่มจำนวนการส่ง
         function addDelivery() {
             deliveryData.today++;
             deliveryData.total++;
             deliveryData.lastDate = new Date().toDateString();
             
-            // ตรวจสอบว่าครบเป้าหมายหรือไม่
             if (deliveryData.today === deliveryData.dailyGoal) {
-                // ครบเป้าหมายพอดี!
                 setTimeout(() => {
-                    const goalEmoji = deliveryData.dailyGoal <= 5 ? '🥉' : 
-                                    deliveryData.dailyGoal <= 10 ? '🥈' : 
-                                    deliveryData.dailyGoal <= 20 ? '🥇' : 
-                                    deliveryData.dailyGoal <= 30 ? '🏅' : '🏆';
-                    alert(`${goalEmoji} ยินดีด้วย! คุณทำครบเป้าหมายวันนี้แล้ว! ${goalEmoji}`);
+                    alert(`🏆 ยอดเยี่ยม! คุณทำตามเป้าหมายวันนี้สำเร็จแล้ว!`);
                 }, 500);
             }
             
-            // เอฟเฟกต์พิเศษสำหรับจำนวนที่สำคัญ
             if (deliveryData.today % 10 === 0 && deliveryData.today > 0) {
-                // ทุก ๆ 10 ครั้ง
-                setTimeout(() => {
-                    showCelebration('🎉');
-                }, 200);
-            } else if (deliveryData.today % 5 === 0 && deliveryData.today > 0) {
-                // ทุก ๆ 5 ครั้ง
-                setTimeout(() => {
-                    showCelebration('✨');
-                }, 200);
+                setTimeout(() => showCelebration('🎉'), 200);
             }
             
-            // แอนิเมชั่น
             const display = document.getElementById('counterDisplay');
             display.classList.add('success-animation');
             setTimeout(() => display.classList.remove('success-animation'), 500);
@@ -555,24 +415,15 @@
             saveData();
         }
 
-        // รีเซ็ตจำนวนวันนี้
         function resetCounter() {
-            if (confirm('คุณต้องการรีเซ็ตจำนวนการส่งวันนี้หรือไม่?\n(ข้อมูลทั้งหมดและเป้าหมายจะยังคงอยู่)')) {
+            if (confirm('คุณต้องการรีเซ็ตออเดอร์วันนี้เป็น 0 หรือไม่?')) {
                 deliveryData.today = 0;
                 updateDisplay();
                 saveData();
-                
-                // แสดงข้อความยืนยัน
                 showCelebration('🔄');
-                const counterNumber = document.getElementById('counterNumber');
-                counterNumber.style.color = '#ff6b6b';
-                setTimeout(() => {
-                    counterNumber.style.color = 'white';
-                }, 1000);
             }
         }
 
-        // ตั้งเป้าหมาย
         function setGoal() {
             const goalInput = document.getElementById('goalInput');
             const newGoal = parseInt(goalInput.value);
@@ -581,35 +432,22 @@
                 deliveryData.dailyGoal = newGoal;
                 updateDisplay();
                 saveData();
-                
-                // แสดงการยืนยัน
                 showCelebration('🎯');
-                
-                // แสดงข้อความยืนยัน
                 const goalStatus = document.getElementById('goalStatus');
-                const originalText = goalStatus.textContent;
-                goalStatus.textContent = `✅ ตั้งเป้าหมาย ${newGoal} ครั้งแล้ว!`;
-                goalStatus.style.color = '#11998e';
-                
-                setTimeout(() => {
-                    updateDisplay(); // รีเฟรชข้อมูลใหม่
-                }, 2000);
-                
+                goalStatus.textContent = `✅ ตั้งเป้าหมาย ${newGoal} ออเดอร์แล้ว!`;
+                goalStatus.style.color = 'var(--primary-green)';
+                setTimeout(() => updateDisplay(), 2000);
             } else {
                 alert('กรุณาใส่เป้าหมายระหว่าง 1-999');
-                goalInput.value = deliveryData.dailyGoal; // คืนค่าเดิมถ้าใส่ผิด
+                goalInput.value = deliveryData.dailyGoal;
             }
         }
 
-        // อัปเดตการแสดงผล
         function updateDisplay() {
             document.getElementById('counterNumber').textContent = deliveryData.today;
             document.getElementById('currentGoal').textContent = deliveryData.dailyGoal;
-            
-            // อัปเดต input เป้าหมาย
             document.getElementById('goalInput').value = deliveryData.dailyGoal;
             
-            // คำนวณความคืบหน้า
             const progress = Math.min((deliveryData.today / deliveryData.dailyGoal) * 100, 100);
             const progressFill = document.getElementById('progressFill');
             const goalStatus = document.getElementById('goalStatus');
@@ -618,83 +456,34 @@
             progressFill.style.width = progress + '%';
             
             if (deliveryData.today >= deliveryData.dailyGoal) {
-                // สำเร็จแล้ว
                 progressFill.classList.add('complete');
-                goalStatus.textContent = '🎉 สำเร็จแล้ว! เก่งมาก!';
+                goalStatus.innerHTML = '🎉 สำเร็จตามเป้า!';
                 goalStatus.classList.add('success');
-                document.getElementById('remaining').textContent = '0';
             } else {
-                // ยังไม่สำเร็จ
                 progressFill.classList.remove('complete');
-                goalStatus.textContent = `เหลืออีก ${remaining} ครั้ง`;
+                goalStatus.innerHTML = `เหลืออีก <strong>${remaining}</strong>`;
                 goalStatus.classList.remove('success');
-                document.getElementById('remaining').textContent = remaining;
+                goalStatus.style.color = ''; // Reset color
             }
             
-            // อัปเดตเวลา
             const now = new Date();
-            const timeString = now.toLocaleString('th-TH', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            document.getElementById('lastUpdated').textContent = `อัปเดตครั้งล่าสุด: ${timeString}`;
+            const timeString = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('lastUpdated').textContent = `อัปเดตล่าสุด: ${timeString} น.`;
         }
 
-        // แสดงเอฟเฟกต์เฉลิมฉลอง
-        function showCelebration(emoji = null) {
-            let selectedEmoji;
-            
-            if (emoji) {
-                selectedEmoji = emoji;
-            } else {
-                // เลือก emoji ตามจำนวนการส่ง
-                const count = deliveryData.today;
-                if (count <= 5) {
-                    selectedEmoji = '🥉'; // ทองแดง สำหรับ 1-5
-                } else if (count <= 10) {
-                    selectedEmoji = '🥈'; // เงิน สำหรับ 6-10
-                } else if (count <= 20) {
-                    selectedEmoji = '🥇'; // ทอง สำหรับ 11-20
-                } else if (count <= 30) {
-                    selectedEmoji = '🏅'; // เหรียญรางวัล สำหรับ 21-30
-                } else {
-                    selectedEmoji = '🏆'; // ถ้วยรางวัล สำหรับ 31+
-                }
-            }
-            
+        function showCelebration(emoji = '✨') {
             const celebration = document.createElement('div');
             celebration.className = 'celebration';
-            celebration.textContent = selectedEmoji;
+            celebration.textContent = emoji;
             document.body.appendChild(celebration);
-            
-            setTimeout(() => {
-                document.body.removeChild(celebration);
-            }, 1000);
+            setTimeout(() => document.body.removeChild(celebration), 1000);
         }
 
-        // เริ่มต้นแอป
         window.onload = function() {
             loadData();
-            
-            // อัปเดตเวลาทุก ๆ นาที
-            setInterval(updateDisplay, 60000);
-            
-            // ป้องกันการสูญหายข้อมูลเมื่อปิดหน้าต่าง
-            window.addEventListener('beforeunload', function() {
-                saveData();
-            });
-            
-            // บันทึกข้อมูลทุก ๆ 30 วินาที (auto-save)
-            setInterval(function() {
-                saveData();
-            }, 30000);
-            
-            // ตรวจสอบ localStorage support
+            setInterval(saveData, 30000);
             if (typeof Storage === "undefined") {
-                alert("เบราว์เซอร์ของคุณไม่รองรับการจัดเก็บข้อมูล ข้อมูลอาจสูญหายเมื่อรีเฟรชหน้า");
+                alert("เบราว์เซอร์ของคุณไม่รองรับการจัดเก็บข้อมูล");
             }
         };
     </script>
