@@ -15,76 +15,100 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            margin: 0;
+            padding: 10px;
         }
         
         .container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(255,255,255,0.2);
             text-align: center;
-            max-width: 500px;
+            max-width: 420px;
             width: 100%;
+            margin: 0 auto;
         }
         
         .header {
-            margin-bottom: 40px;
+            margin-bottom: 25px;
         }
         
         .title {
-            font-size: 28px;
+            font-size: 24px;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 700;
         }
         
         .subtitle {
             color: #666;
-            font-size: 16px;
+            font-size: 14px;
         }
         
         .counter-display {
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+            padding: 25px 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .counter-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
         }
         
         .counter-label {
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 16px;
+            margin-bottom: 8px;
             opacity: 0.9;
+            position: relative;
+            z-index: 1;
         }
         
         .counter-number {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: bold;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
         }
         
         .buttons {
             display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
         }
         
         .btn {
-            flex: 1;
-            padding: 15px;
+            width: 100%;
+            padding: 18px;
             border: none;
-            border-radius: 10px;
+            border-radius: 15px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            text-transform: none;
         }
         
         .btn:before {
@@ -105,67 +129,174 @@
         .btn-add {
             background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
-            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
+            box-shadow: 0 8px 20px rgba(17, 153, 142, 0.3);
+            font-size: 20px;
+            padding: 22px;
         }
         
         .btn-add:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(17, 153, 142, 0.4);
+        }
+        
+        .btn-add:active {
+            transform: translateY(-1px);
         }
         
         .btn-reset {
-            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
             color: white;
-            box-shadow: 0 5px 15px rgba(255, 65, 108, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+            font-size: 16px;
         }
         
         .btn-reset:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 65, 108, 0.4);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
         }
         
         .stats {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+            backdrop-filter: blur(10px);
             padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
         }
         
         .stats-title {
-            font-size: 16px;
+            font-size: 18px;
             color: #333;
             margin-bottom: 15px;
             font-weight: 600;
         }
         
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        .goal-setting {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
         }
         
-        .stat-item {
+        #goalInput {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid rgba(79, 172, 254, 0.3);
+            border-radius: 12px;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        #goalInput:focus {
+            border-color: #4facfe;
+            background: rgba(255,255,255,0.95);
+            transform: scale(1.02);
+        }
+        
+        .btn-set-goal {
+            padding: 14px 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-set-goal:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .goal-progress {
             text-align: center;
         }
         
-        .stat-number {
-            font-size: 24px;
+        .goal-text {
+            font-size: 18px;
             font-weight: bold;
-            color: #4facfe;
-            margin-bottom: 5px;
+            color: #333;
+            margin-bottom: 15px;
         }
         
-        .stat-label {
-            font-size: 12px;
+        .progress-bar {
+            background: rgba(224, 224, 224, 0.6);
+            height: 14px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: progressShine 2s ease-in-out infinite;
+        }
+        
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-fill.complete {
+            background: linear-gradient(90deg, #ff6b6b 0%, #ffd93d 100%);
+            animation: progressGlow 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes progressGlow {
+            from { 
+                box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+                filter: brightness(1);
+            }
+            to { 
+                box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+                filter: brightness(1.2);
+            }
+        }
+        
+        .goal-status {
+            font-size: 16px;
             color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-weight: 500;
+        }
+        
+        .goal-status.success {
+            color: #11998e;
+            font-weight: bold;
+            animation: pulse 2s ease-in-out infinite;
         }
         
         .last-updated {
-            color: #888;
-            font-size: 14px;
-            margin-top: 20px;
+            color: #999;
+            font-size: 12px;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
         }
         
         .success-animation {
@@ -205,20 +336,62 @@
         }
         
         @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
             .container {
-                padding: 20px;
+                padding: 15px;
+                margin: 5px;
+                border-radius: 20px;
+            }
+            
+            .title {
+                font-size: 22px;
             }
             
             .counter-number {
-                font-size: 36px;
+                font-size: 38px;
             }
             
-            .buttons {
-                flex-direction: column;
+            .btn-add {
+                padding: 20px;
+                font-size: 18px;
             }
             
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .btn-reset {
+                padding: 16px;
+                font-size: 15px;
+            }
+            
+            #goalInput {
+                padding: 12px;
+                font-size: 15px;
+            }
+            
+            .btn-set-goal {
+                padding: 12px 16px;
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .container {
+                padding: 12px;
+                margin: 3px;
+            }
+            
+            .counter-display {
+                padding: 20px 15px;
+            }
+            
+            .counter-number {
+                font-size: 34px;
+            }
+            
+            .btn-add {
+                padding: 18px;
+                font-size: 17px;
             }
         }
     </style>
@@ -245,15 +418,20 @@
         </div>
         
         <div class="stats">
-            <div class="stats-title">📊 สถิติของคุณ</div>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-number" id="totalDeliveries">0</div>
-                    <div class="stat-label">ทั้งหมด</div>
+            <div class="stats-title">🎯 เป้าหมายวันนี้</div>
+            <div class="goal-setting">
+                <input type="number" id="goalInput" placeholder="ตั้งเป้าหมาย" min="1" max="999" value="10">
+                <button class="btn-set-goal" onclick="setGoal()">ตั้งเป้า</button>
+            </div>
+            <div class="goal-progress">
+                <div class="goal-text">
+                    <span id="currentGoal">10</span> ครั้ง
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number" id="dailyAverage">0</div>
-                    <div class="stat-label">เฉลี่ย/วัน</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="goal-status" id="goalStatus">
+                    เหลืออีก <span id="remaining">10</span> ครั้ง
                 </div>
             </div>
         </div>
@@ -270,7 +448,8 @@
             total: 0,
             lastDate: new Date().toDateString(),
             startDate: new Date().toDateString(),
-            history: {}
+            history: {},
+            dailyGoal: 10
         };
 
         // โหลดข้อมูลเมื่อเริ่มต้น
@@ -307,8 +486,30 @@
             deliveryData.total++;
             deliveryData.lastDate = new Date().toDateString();
             
-            // เอฟเฟกต์เฉลิมฉลอง
-            showCelebration();
+            // ตรวจสอบว่าครบเป้าหมายหรือไม่
+            if (deliveryData.today === deliveryData.dailyGoal) {
+                // ครบเป้าหมายพอดี!
+                setTimeout(() => {
+                    const goalEmoji = deliveryData.dailyGoal <= 5 ? '🥉' : 
+                                    deliveryData.dailyGoal <= 10 ? '🥈' : 
+                                    deliveryData.dailyGoal <= 20 ? '🥇' : 
+                                    deliveryData.dailyGoal <= 30 ? '🏅' : '🏆';
+                    alert(`${goalEmoji} ยินดีด้วย! คุณทำครบเป้าหมายวันนี้แล้ว! ${goalEmoji}`);
+                }, 500);
+            }
+            
+            // เอฟเฟกต์พิเศษสำหรับจำนวนที่สำคัญ
+            if (deliveryData.today % 10 === 0 && deliveryData.today > 0) {
+                // ทุก ๆ 10 ครั้ง
+                setTimeout(() => {
+                    showCelebration('🎉');
+                }, 200);
+            } else if (deliveryData.today % 5 === 0 && deliveryData.today > 0) {
+                // ทุก ๆ 5 ครั้ง
+                setTimeout(() => {
+                    showCelebration('✨');
+                }, 200);
+            }
             
             // แอนิเมชั่น
             const display = document.getElementById('counterDisplay');
@@ -328,17 +529,52 @@
             }
         }
 
+        // ตั้งเป้าหมาย
+        function setGoal() {
+            const goalInput = document.getElementById('goalInput');
+            const newGoal = parseInt(goalInput.value);
+            
+            if (newGoal && newGoal > 0 && newGoal <= 999) {
+                deliveryData.dailyGoal = newGoal;
+                updateDisplay();
+                saveData();
+                
+                // แสดงการยืนยัน
+                showCelebration('🎯');
+            } else {
+                alert('กรุณาใส่เป้าหมายระหว่าง 1-999');
+            }
+        }
+
         // อัปเดตการแสดงผล
         function updateDisplay() {
             document.getElementById('counterNumber').textContent = deliveryData.today;
-            document.getElementById('totalDeliveries').textContent = deliveryData.total;
+            document.getElementById('currentGoal').textContent = deliveryData.dailyGoal;
             
-            // คำนวณค่าเฉลี่ยต่อวัน
-            const startDate = new Date(deliveryData.startDate);
-            const today = new Date();
-            const daysPassed = Math.max(1, Math.ceil((today - startDate) / (1000 * 60 * 60 * 24)) + 1);
-            const average = Math.round(deliveryData.total / daysPassed * 10) / 10;
-            document.getElementById('dailyAverage').textContent = average;
+            // อัปเดต input เป้าหมาย
+            document.getElementById('goalInput').value = deliveryData.dailyGoal;
+            
+            // คำนวณความคืบหน้า
+            const progress = Math.min((deliveryData.today / deliveryData.dailyGoal) * 100, 100);
+            const progressFill = document.getElementById('progressFill');
+            const goalStatus = document.getElementById('goalStatus');
+            const remaining = Math.max(0, deliveryData.dailyGoal - deliveryData.today);
+            
+            progressFill.style.width = progress + '%';
+            
+            if (deliveryData.today >= deliveryData.dailyGoal) {
+                // สำเร็จแล้ว
+                progressFill.classList.add('complete');
+                goalStatus.textContent = '🎉 สำเร็จแล้ว! เก่งมาก!';
+                goalStatus.classList.add('success');
+                document.getElementById('remaining').textContent = '0';
+            } else {
+                // ยังไม่สำเร็จ
+                progressFill.classList.remove('complete');
+                goalStatus.textContent = `เหลืออีก ${remaining} ครั้ง`;
+                goalStatus.classList.remove('success');
+                document.getElementById('remaining').textContent = remaining;
+            }
             
             // อัปเดตเวลา
             const now = new Date();
@@ -353,13 +589,30 @@
         }
 
         // แสดงเอฟเฟกต์เฉลิมฉลอง
-        function showCelebration() {
-            const celebrations = ['🎉', '🎊', '✨', '🏆', '👏', '🎯'];
-            const emoji = celebrations[Math.floor(Math.random() * celebrations.length)];
+        function showCelebration(emoji = null) {
+            let selectedEmoji;
+            
+            if (emoji) {
+                selectedEmoji = emoji;
+            } else {
+                // เลือก emoji ตามจำนวนการส่ง
+                const count = deliveryData.today;
+                if (count <= 5) {
+                    selectedEmoji = '🥉'; // ทองแดง สำหรับ 1-5
+                } else if (count <= 10) {
+                    selectedEmoji = '🥈'; // เงิน สำหรับ 6-10
+                } else if (count <= 20) {
+                    selectedEmoji = '🥇'; // ทอง สำหรับ 11-20
+                } else if (count <= 30) {
+                    selectedEmoji = '🏅'; // เหรียญรางวัล สำหรับ 21-30
+                } else {
+                    selectedEmoji = '🏆'; // ถ้วยรางวัล สำหรับ 31+
+                }
+            }
             
             const celebration = document.createElement('div');
             celebration.className = 'celebration';
-            celebration.textContent = emoji;
+            celebration.textContent = selectedEmoji;
             document.body.appendChild(celebration);
             
             setTimeout(() => {
