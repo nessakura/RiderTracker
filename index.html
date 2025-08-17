@@ -454,30 +454,65 @@
 
         // โหลดข้อมูลเมื่อเริ่มต้น
         function loadData() {
-            const saved = localStorage.getItem('riderDeliveryData');
-            if (saved) {
-                const parsedData = JSON.parse(saved);
-                
-                // ตรวจสอบว่าเป็นวันใหม่หรือไม่
-                const today = new Date().toDateString();
-                if (parsedData.lastDate !== today) {
-                    // บันทึกข้อมูลวันเก่า
-                    if (parsedData.today > 0) {
-                        parsedData.history[parsedData.lastDate] = parsedData.today;
+            try {
+                const saved = localStorage.getItem('riderDeliveryData');
+                if (saved) {
+                    const parsedData = JSON.parse(saved);
+                    
+                    // ตรวจสอบว่าเป็นวันใหม่หรือไม่
+                    const today = new Date().toDateString();
+                    if (parsedData.lastDate !== today) {
+                        // บันทึกข้อมูลวันเก่า
+                        if (parsedData.today > 0) {
+                            parsedData.history[parsedData.lastDate] = parsedData.today;
+                        }
+                        // รีเซ็ตการนับวันใหม่
+                        parsedData.today = 0;
+                        parsedData.lastDate = today;
                     }
-                    // รีเซ็ตการนับวันใหม่
-                    parsedData.today = 0;
-                    parsedData.lastDate = today;
+                    
+                    // ตรวจสอบว่ามี dailyGoal หรือไม่ ถ้าไม่มีให้ใส่ค่าเริ่มต้น
+                    if (!parsedData.dailyGoal) {
+                        parsedData.dailyGoal = 10;
+                    }
+                    
+                    deliveryData = parsedData;
+                } else {
+                    // ถ้าไม่มีข้อมูลเก่า ให้สร้างข้อมูลใหม่
+                    deliveryData = {
+                        today: 0,
+                        total: 0,
+                        lastDate: new Date().toDateString(),
+                        startDate: new Date().toDateString(),
+                        history: {},
+                        dailyGoal: 10
+                    };
+                    saveData(); // บันทึกข้อมูลเริ่มต้น
                 }
-                
-                deliveryData = parsedData;
+            } catch (error) {
+                console.error('Error loading data:', error);
+                // ถ้าเกิดข้อผิดพลาดในการโหลด ให้สร้างข้อมูลใหม่
+                deliveryData = {
+                    today: 0,
+                    total: 0,
+                    lastDate: new Date().toDateString(),
+                    startDate: new Date().toDateString(),
+                    history: {},
+                    dailyGoal: 10
+                };
+                saveData();
             }
             updateDisplay();
         }
 
         // บันทึกข้อมูล
         function saveData() {
-            localStorage.setItem('riderDeliveryData', JSON.stringify(deliveryData));
+            try {
+                localStorage.setItem('riderDeliveryData', JSON.stringify(deliveryData));
+            } catch (error) {
+                console.error('Error saving data:', error);
+                alert('ไม่สามารถบันทึกข้อมูลได้ กรุณาตรวจสอบที่เก็บข้อมูลของเบราว์เซอร์');
+            }
         }
 
         // เพิ่มจำนวนการส่ง
@@ -522,10 +557,18 @@
 
         // รีเซ็ตจำนวนวันนี้
         function resetCounter() {
-            if (confirm('คุณต้องการรีเซ็ตจำนวนการส่งวันนี้หรือไม่?')) {
+            if (confirm('คุณต้องการรีเซ็ตจำนวนการส่งวันนี้หรือไม่?\n(ข้อมูลทั้งหมดและเป้าหมายจะยังคงอยู่)')) {
                 deliveryData.today = 0;
                 updateDisplay();
                 saveData();
+                
+                // แสดงข้อความยืนยัน
+                showCelebration('🔄');
+                const counterNumber = document.getElementById('counterNumber');
+                counterNumber.style.color = '#ff6b6b';
+                setTimeout(() => {
+                    counterNumber.style.color = 'white';
+                }, 1000);
             }
         }
 
@@ -541,8 +584,20 @@
                 
                 // แสดงการยืนยัน
                 showCelebration('🎯');
+                
+                // แสดงข้อความยืนยัน
+                const goalStatus = document.getElementById('goalStatus');
+                const originalText = goalStatus.textContent;
+                goalStatus.textContent = `✅ ตั้งเป้าหมาย ${newGoal} ครั้งแล้ว!`;
+                goalStatus.style.color = '#11998e';
+                
+                setTimeout(() => {
+                    updateDisplay(); // รีเฟรชข้อมูลใหม่
+                }, 2000);
+                
             } else {
                 alert('กรุณาใส่เป้าหมายระหว่าง 1-999');
+                goalInput.value = deliveryData.dailyGoal; // คืนค่าเดิมถ้าใส่ผิด
             }
         }
 
@@ -626,6 +681,21 @@
             
             // อัปเดตเวลาทุก ๆ นาที
             setInterval(updateDisplay, 60000);
+            
+            // ป้องกันการสูญหายข้อมูลเมื่อปิดหน้าต่าง
+            window.addEventListener('beforeunload', function() {
+                saveData();
+            });
+            
+            // บันทึกข้อมูลทุก ๆ 30 วินาที (auto-save)
+            setInterval(function() {
+                saveData();
+            }, 30000);
+            
+            // ตรวจสอบ localStorage support
+            if (typeof Storage === "undefined") {
+                alert("เบราว์เซอร์ของคุณไม่รองรับการจัดเก็บข้อมูล ข้อมูลอาจสูญหายเมื่อรีเฟรชหน้า");
+            }
         };
     </script>
 </body>
