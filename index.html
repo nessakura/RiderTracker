@@ -16,6 +16,7 @@
             --light-grey-bg: #F7F9FA;
             --white: #FFFFFF;
             --danger-red: #E74C3C;
+            --promptpay-blue: #2A64F5;
             --shadow-color: rgba(0, 0, 0, 0.1);
         }
 
@@ -40,7 +41,7 @@
             background: var(--white);
             padding: 20px;
             border-radius: 25px;
-            box-shadow: 0 10px B30px var(--shadow-color);
+            box-shadow: 0 10px 30px var(--shadow-color);
             text-align: center;
             max-width: 420px;
             width: 100%;
@@ -165,14 +166,65 @@
         }
         .btn-reset:hover { background: #a4acb1; }
         
-        .stats {
+        .stats, .payment-generator { /* ใช้ style ร่วมกัน */
             background: var(--light-grey-bg);
             padding: 20px;
             border-radius: 20px;
+            margin-bottom: 15px;
         }
         
-        /* --- Other styles remain the same --- */
-        .stats-title{font-size:18px;color:var(--dark-text);margin-bottom:15px;font-weight:600}.goal-setting{display:flex;gap:10px;margin-bottom:20px;align-items:center}#goalInput{flex:1;padding:14px;border:2px solid #dfe6e9;border-radius:12px;font-size:16px;text-align:center;outline:0;transition:all .3s;background:var(--white);font-family:'Kanit',sans-serif}#goalInput:focus{border-color:var(--grab-green);transform:scale(1.02)}.btn-set-goal{padding:14px 18px;background:var(--dark-text);color:white;border-radius:12px;font-size:14px}.btn-set-goal:hover{background:#4a637b}.goal-text{font-size:16px;color:#7f8c8d;margin-bottom:10px}.goal-text strong{font-size:20px;color:var(--dark-text);font-weight:700}.progress-bar{background:#dfe6e9;height:16px;border-radius:10px;overflow:hidden;margin-bottom:10px}.progress-fill{height:100%;background:linear-gradient(90deg,#FFB347 0%,var(--accent-orange) 100%);transition:width .8s cubic-bezier(.4,0,.2,1);border-radius:10px}.progress-fill.complete{background:linear-gradient(90deg,#56ab2f 0%,var(--grab-green) 100%);animation:progressGlow 1.5s ease-in-out infinite alternate}@keyframes progressGlow{from{box-shadow:0 0 5px rgba(86,171,47,.5)}to{box-shadow:0 0 15px rgba(86,171,47,.8)}}.goal-status{font-size:16px;color:#7f8c8d;font-weight:500}.goal-status.success{color:var(--grab-green);font-weight:700}.last-updated{color:#95a5a6;font-size:12px;margin-top:20px}.success-animation{animation:pulse .5s ease-in-out}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}.celebration{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;pointer-events:none;animation:celebrate 1s ease-out forwards;z-index:1000}@keyframes celebrate{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)}}@media (max-width:480px){body{padding:5px}.container{padding:15px;margin:5px}.title{font-size:22px}.counter-number{font-size:42px}.btn-reset{padding:16px;font-size:16px}}
+        .stats-title, .payment-title { /* ใช้ style ร่วมกัน */
+            font-size:18px;
+            color:var(--dark-text);
+            margin-bottom:15px;
+            font-weight:600
+        }
+        
+        .goal-setting, .payment-input-group { /* ใช้ style ร่วมกัน */
+            display:flex;
+            gap:10px;
+            align-items:center
+        }
+
+        #goalInput, #paymentAmount { /* ใช้ style ร่วมกัน */
+            flex:1;
+            padding:14px;
+            border:2px solid #dfe6e9;
+            border-radius:12px;
+            font-size:16px;
+            text-align:center;
+            outline:0;
+            transition:all .3s;
+            background:var(--white);
+            font-family:'Kanit',sans-serif
+        }
+        
+        #goalInput:focus, #paymentAmount:focus { /* ใช้ style ร่วมกัน */
+            border-color:var(--grab-green);
+            transform:scale(1.02)
+        }
+        
+        .btn-set-goal {
+            padding:14px 18px;
+            background:var(--dark-text);
+            color:white;
+            border-radius:12px;
+            font-size:14px
+        }
+        .btn-set-goal:hover { background:#4a637b }
+        
+        /* สไตล์สำหรับปุ่มสร้าง QR Code */
+        .btn-generate-qr {
+            padding:14px 18px;
+            background:var(--promptpay-blue);
+            color:white;
+            border-radius:12px;
+            font-size:14px;
+            font-weight: 600;
+        }
+        .btn-generate-qr:hover { background:#1E4BBD; transform: translateY(-2px); }
+        
+        .goal-text{font-size:16px;color:#7f8c8d;margin-bottom:10px}.goal-text strong{font-size:20px;color:var(--dark-text);font-weight:700}.progress-bar{background:#dfe6e9;height:16px;border-radius:10px;overflow:hidden;margin-bottom:10px}.progress-fill{height:100%;background:linear-gradient(90deg,#FFB347 0%,var(--accent-orange) 100%);transition:width .8s cubic-bezier(.4,0,.2,1);border-radius:10px}.progress-fill.complete{background:linear-gradient(90deg,#56ab2f 0%,var(--grab-green) 100%);animation:progressGlow 1.5s ease-in-out infinite alternate}@keyframes progressGlow{from{box-shadow:0 0 5px rgba(86,171,47,.5)}to{box-shadow:0 0 15px rgba(86,171,47,.8)}}.goal-status{font-size:16px;color:#7f8c8d;font-weight:500}.goal-status.success{color:var(--grab-green);font-weight:700}.last-updated{color:#95a5a6;font-size:12px;margin-top:20px}.success-animation{animation:pulse .5s ease-in-out}@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}.celebration{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:60px;pointer-events:none;animation:celebrate 1s ease-out forwards;z-index:1000}@keyframes celebrate{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)}}@media (max-width:480px){body{padding:5px}.container{padding:15px;margin:5px}.title{font-size:22px}.counter-number{font-size:42px}.btn-reset{padding:16px;font-size:16px}}
     </style>
 </head>
 <body>
@@ -230,7 +282,14 @@
                 </div>
             </div>
         </div>
-        
+
+        <div class="payment-generator">
+            <div class="payment-title">💳 สร้าง QR PromptPay</div>
+            <div class="payment-input-group">
+                <input type="number" id="paymentAmount" placeholder="ใส่จำนวนเงิน (บาท)" min="0.01" step="0.01">
+                <button class="btn-generate-qr" onclick="generatePromptPay()">สร้าง QR Code</button>
+            </div>
+        </div>
         <div class="last-updated" id="lastUpdated">
             อัปเดตล่าสุด: -
         </div>
@@ -238,12 +297,7 @@
 
     <script>
         const initialData = {
-            // โครงสร้างข้อมูลใหม่เพื่อรองรับหลายค่าย
-            counts: {
-                total: 0,
-                lineman: 0,
-                grab: 0
-            },
+            counts: { total: 0, lineman: 0, grab: 0 },
             lastDate: new Date().toDateString(),
             dailyGoal: 20
         };
@@ -255,25 +309,18 @@
                 if (saved) {
                     const parsedData = JSON.parse(saved);
                     const today = new Date().toDateString();
-                    
-                    // รีเซ็ตค่าเมื่อขึ้นวันใหม่
                     if (parsedData.lastDate !== today) {
                         parsedData.counts = { total: 0, lineman: 0, grab: 0 };
                         parsedData.lastDate = today;
                     }
-
-                    // ตรวจสอบโครงสร้างข้อมูลใหม่
                     if (!parsedData.counts) {
-                        // ถ้าเป็นข้อมูลเก่า ให้แปลงโครงสร้าง
                         parsedData.counts = { total: parsedData.today || 0, lineman: 0, grab: 0 };
-                        delete parsedData.today; // ลบ property เก่าทิ้ง
+                        delete parsedData.today;
                     }
-                    
                     deliveryData = parsedData;
                 }
             } catch (error) {
                 console.error('Error loading data:', error);
-                // หาก error ให้ใช้ค่าเริ่มต้น
                 deliveryData = JSON.parse(JSON.stringify(initialData));
             }
             updateDisplay();
@@ -287,34 +334,24 @@
             }
         }
 
-        // ฟังก์ชันกลางสำหรับเพิ่มออเดอร์
         function addOrder(company) {
             if (deliveryData.counts.hasOwnProperty(company)) {
                 deliveryData.counts[company]++;
                 deliveryData.counts.total++;
-
-                // เรียกฟังก์ชันจัดการหลังเพิ่มออเดอร์
                 handleOrderAdded();
             }
         }
 
-        // ฟังก์ชันจัดการ animation และการบันทึกข้อมูล
         function handleOrderAdded() {
-            // เช็คเป้าหมาย
             if (deliveryData.counts.total === deliveryData.dailyGoal) {
                 setTimeout(() => alert(`🏆 ยอดเยี่ยม! คุณทำตามเป้าหมายวันนี้สำเร็จแล้ว!`), 500);
             }
-            
-            // Celebration ทุกๆ 10 ออเดอร์
             if (deliveryData.counts.total > 0 && deliveryData.counts.total % 10 === 0) {
                 setTimeout(() => showCelebration('🎉'), 200);
             }
-            
-            // Animation
             const display = document.getElementById('counterDisplay');
             display.classList.add('success-animation');
             setTimeout(() => display.classList.remove('success-animation'), 500);
-            
             updateDisplay();
             saveData();
         }
@@ -342,26 +379,18 @@
         }
 
         function updateDisplay() {
-            // อัปเดตยอดรวม
             document.getElementById('counterNumber').textContent = deliveryData.counts.total;
-
-            // อัปเดตยอดแต่ละค่าย
             document.getElementById('lineman-count').textContent = deliveryData.counts.lineman;
             document.getElementById('grab-count').textContent = deliveryData.counts.grab;
-            
-            // อัปเดตเป้าหมาย
             const goal = deliveryData.dailyGoal;
             const total = deliveryData.counts.total;
             document.getElementById('currentGoal').textContent = goal;
             document.getElementById('goalInput').value = goal;
-            
             const progress = Math.min((total / goal) * 100, 100);
             const progressFill = document.getElementById('progressFill');
             const goalStatus = document.getElementById('goalStatus');
             const remaining = Math.max(0, goal - total);
-            
             progressFill.style.width = progress + '%';
-            
             if (total >= goal) {
                 progressFill.classList.add('complete');
                 goalStatus.innerHTML = '🎉 สำเร็จตามเป้า!';
@@ -371,7 +400,6 @@
                 goalStatus.innerHTML = `เหลืออีก <strong>${remaining}</strong>`;
                 goalStatus.classList.remove('success');
             }
-            
             const now = new Date();
             const timeString = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('lastUpdated').textContent = `อัปเดตล่าสุด: ${timeString} น.`;
@@ -385,9 +413,32 @@
             setTimeout(() => document.body.removeChild(celebration), 1000);
         }
 
+        // ========== FUNCTION ที่เพิ่มเข้ามาใหม่ ==========
+        function generatePromptPay() {
+            const amountInput = document.getElementById('paymentAmount');
+            // แปลงค่าที่รับมาเป็นตัวเลขทศนิยม
+            const amount = parseFloat(amountInput.value);
+
+            // ตรวจสอบว่าค่าที่กรอกถูกต้องหรือไม่
+            if (isNaN(amount) || amount <= 0) {
+                alert('กรุณาใส่จำนวนเงินที่ถูกต้อง (มากกว่า 0)');
+                return; // หยุดการทำงาน
+            }
+
+            // จัดรูปแบบตัวเลขให้มีทศนิยม 2 ตำแหน่งเสมอ (เช่น 50 -> 50.00)
+            const formattedAmount = amount.toFixed(2);
+            
+            // สร้าง URL สำหรับ PromptPay
+            const promptPayUrl = `https://promptpay.io/0963293433/${formattedAmount}`;
+
+            // เปิด URL ในแท็บใหม่
+            window.open(promptPayUrl, '_blank');
+        }
+        // ==========================================
+
         window.onload = function() {
             loadData();
-            setInterval(saveData, 30000); // Auto-save
+            setInterval(saveData, 30000);
         };
     </script>
 </body>
