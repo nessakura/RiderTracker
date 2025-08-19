@@ -17,6 +17,7 @@
             --white: #FFFFFF;
             --danger-red: #E74C3C;
             --promptpay-blue: #2A64F5;
+            --money-yellow: #F39C12;
             --shadow-color: rgba(0, 0, 0, 0.1);
         }
 
@@ -90,7 +91,7 @@
         .individual-counters {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 25px;
+            margin-bottom: 15px; /* ลดระยะห่าง */
             padding: 15px 0;
             background: #f1f2f6;
             border-radius: 15px;
@@ -113,6 +114,30 @@
         }
         #lineman-count { color: var(--lineman-mint); }
         #grab-count { color: var(--grab-green); }
+
+        /* ----- ส่วนแสดงรายได้ที่เพิ่มเข้ามาใหม่ ----- */
+        .revenue-monitor {
+            background: linear-gradient(135deg, #f1c40f 0%, var(--money-yellow) 100%);
+            color: var(--dark-text);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 15px rgba(243, 156, 18, 0.25);
+        }
+        .revenue-label {
+            font-size: 16px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+        .revenue-amount {
+            font-size: 32px;
+            font-weight: 700;
+        }
+        .revenue-amount small {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        /* -------------------------------------- */
         
         .buttons {
             display: flex;
@@ -213,7 +238,6 @@
         }
         .btn-set-goal:hover { background:#4a637b }
         
-        /* สไตล์สำหรับปุ่มสร้าง QR Code */
         .btn-generate-qr {
             padding:14px 18px;
             background:var(--promptpay-blue);
@@ -231,7 +255,7 @@
     <div class="container">
         <div class="header">
             <h1 class="title">🛵 Rider Hub</h1>
-            <p class="subtitle">บันทึกออเดอร์รายวัน</p>
+            <p class="subtitle">บันทึกออเดอร์และรายรับ</p>
         </div>
         
         <div class="counter-display" id="counterDisplay">
@@ -249,7 +273,11 @@
                 <div class="counter-item-number" id="grab-count">0</div>
             </div>
         </div>
-        
+
+        <div class="revenue-monitor">
+            <div class="revenue-label">รายรับรวมวันนี้</div>
+            <div class="revenue-amount" id="revenue-amount">0 <small>บาท</small></div>
+        </div>
         <div class="buttons">
             <div class="company-buttons">
                 <button class="btn btn-lineman" onclick="addOrder('lineman')">
@@ -290,14 +318,23 @@
                 <button class="btn-generate-qr" onclick="generatePromptPay()">สร้าง QR Code</button>
             </div>
         </div>
+        
         <div class="last-updated" id="lastUpdated">
             อัปเดตล่าสุด: -
         </div>
     </div>
 
     <script>
+        // กำหนดเรทรายได้ต่อออเดอร์
+        const REVENUE_RATES = {
+            lineman: 24,
+            grab: 21
+        };
+
         const initialData = {
             counts: { total: 0, lineman: 0, grab: 0 },
+            // เพิ่ม revenue เข้าไปใน object ข้อมูล
+            revenue: 0, 
             lastDate: new Date().toDateString(),
             dailyGoal: 20
         };
@@ -307,16 +344,25 @@
             try {
                 const saved = localStorage.getItem('riderDeliveryData');
                 if (saved) {
-                    const parsedData = JSON.parse(saved);
+                    let parsedData = JSON.parse(saved);
                     const today = new Date().toDateString();
+                    
+                    // รีเซ็ตค่าเมื่อขึ้นวันใหม่
                     if (parsedData.lastDate !== today) {
-                        parsedData.counts = { total: 0, lineman: 0, grab: 0 };
+                        parsedData = JSON.parse(JSON.stringify(initialData)); // รีเซ็ตเป็นค่าเริ่มต้นทั้งหมด
                         parsedData.lastDate = today;
                     }
+
+                    // ตรวจสอบโครงสร้างข้อมูลใหม่
                     if (!parsedData.counts) {
                         parsedData.counts = { total: parsedData.today || 0, lineman: 0, grab: 0 };
                         delete parsedData.today;
                     }
+                    // ตรวจสอบว่ามี revenue หรือไม่ ถ้าไม่มีให้ใส่ค่าเริ่มต้น
+                    if (parsedData.revenue === undefined) {
+                        parsedData.revenue = (parsedData.counts.lineman * REVENUE_RATES.lineman) + (parsedData.counts.grab * REVENUE_RATES.grab);
+                    }
+                    
                     deliveryData = parsedData;
                 }
             } catch (error) {
@@ -338,6 +384,9 @@
             if (deliveryData.counts.hasOwnProperty(company)) {
                 deliveryData.counts[company]++;
                 deliveryData.counts.total++;
+                // คำนวณรายได้เพิ่ม
+                deliveryData.revenue += REVENUE_RATES[company];
+
                 handleOrderAdded();
             }
         }
@@ -357,8 +406,10 @@
         }
 
         function resetCounter() {
-            if (confirm('คุณต้องการรีเซ็ตออเดอร์ทั้งหมดของวันนี้เป็น 0 หรือไม่?')) {
+            if (confirm('คุณต้องการรีเซ็ตออเดอร์และรายรับทั้งหมดของวันนี้เป็น 0 หรือไม่?')) {
+                // รีเซ็ตค่าทั้งหมดกลับไปเป็นค่าเริ่มต้น
                 deliveryData.counts = { total: 0, lineman: 0, grab: 0 };
+                deliveryData.revenue = 0;
                 updateDisplay();
                 saveData();
                 showCelebration('🔄');
@@ -379,18 +430,27 @@
         }
 
         function updateDisplay() {
+            // อัปเดตยอดออเดอร์
             document.getElementById('counterNumber').textContent = deliveryData.counts.total;
             document.getElementById('lineman-count').textContent = deliveryData.counts.lineman;
             document.getElementById('grab-count').textContent = deliveryData.counts.grab;
+
+            // อัปเดตยอดรายรับ
+            document.getElementById('revenue-amount').innerHTML = `${deliveryData.revenue.toLocaleString()} <small>บาท</small>`;
+            
+            // อัปเดตเป้าหมาย
             const goal = deliveryData.dailyGoal;
             const total = deliveryData.counts.total;
             document.getElementById('currentGoal').textContent = goal;
             document.getElementById('goalInput').value = goal;
+            
             const progress = Math.min((total / goal) * 100, 100);
             const progressFill = document.getElementById('progressFill');
             const goalStatus = document.getElementById('goalStatus');
             const remaining = Math.max(0, goal - total);
+            
             progressFill.style.width = progress + '%';
+            
             if (total >= goal) {
                 progressFill.classList.add('complete');
                 goalStatus.innerHTML = '🎉 สำเร็จตามเป้า!';
@@ -400,6 +460,7 @@
                 goalStatus.innerHTML = `เหลืออีก <strong>${remaining}</strong>`;
                 goalStatus.classList.remove('success');
             }
+            
             const now = new Date();
             const timeString = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
             document.getElementById('lastUpdated').textContent = `อัปเดตล่าสุด: ${timeString} น.`;
@@ -413,28 +474,17 @@
             setTimeout(() => document.body.removeChild(celebration), 1000);
         }
 
-        // ========== FUNCTION ที่เพิ่มเข้ามาใหม่ ==========
         function generatePromptPay() {
             const amountInput = document.getElementById('paymentAmount');
-            // แปลงค่าที่รับมาเป็นตัวเลขทศนิยม
             const amount = parseFloat(amountInput.value);
-
-            // ตรวจสอบว่าค่าที่กรอกถูกต้องหรือไม่
             if (isNaN(amount) || amount <= 0) {
                 alert('กรุณาใส่จำนวนเงินที่ถูกต้อง (มากกว่า 0)');
-                return; // หยุดการทำงาน
+                return;
             }
-
-            // จัดรูปแบบตัวเลขให้มีทศนิยม 2 ตำแหน่งเสมอ (เช่น 50 -> 50.00)
             const formattedAmount = amount.toFixed(2);
-            
-            // สร้าง URL สำหรับ PromptPay
             const promptPayUrl = `https://promptpay.io/0963293433/${formattedAmount}`;
-
-            // เปิด URL ในแท็บใหม่
             window.open(promptPayUrl, '_blank');
         }
-        // ==========================================
 
         window.onload = function() {
             loadData();
