@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rider Hub - Multi-Company</title>
+
+    <link rel="icon" type="image/png" href="https://i.ibb.co/68r422t/rider-hub-icon.png">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/68r422t/rider-hub-icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700&display=swap" rel="stylesheet">
@@ -91,7 +94,7 @@
         .individual-counters {
             display: flex;
             justify-content: space-around;
-            margin-bottom: 15px; /* ลดระยะห่าง */
+            margin-bottom: 15px;
             padding: 15px 0;
             background: #f1f2f6;
             border-radius: 15px;
@@ -115,7 +118,6 @@
         #lineman-count { color: var(--lineman-mint); }
         #grab-count { color: var(--grab-green); }
 
-        /* ----- ส่วนแสดงรายได้ที่เพิ่มเข้ามาใหม่ ----- */
         .revenue-monitor {
             background: linear-gradient(135deg, #f1c40f 0%, var(--money-yellow) 100%);
             color: var(--dark-text);
@@ -137,7 +139,6 @@
             font-size: 20px;
             font-weight: 600;
         }
-        /* -------------------------------------- */
         
         .buttons {
             display: flex;
@@ -191,27 +192,27 @@
         }
         .btn-reset:hover { background: #a4acb1; }
         
-        .stats, .payment-generator { /* ใช้ style ร่วมกัน */
+        .stats, .payment-generator {
             background: var(--light-grey-bg);
             padding: 20px;
             border-radius: 20px;
             margin-bottom: 15px;
         }
         
-        .stats-title, .payment-title { /* ใช้ style ร่วมกัน */
+        .stats-title, .payment-title {
             font-size:18px;
             color:var(--dark-text);
             margin-bottom:15px;
             font-weight:600
         }
         
-        .goal-setting, .payment-input-group { /* ใช้ style ร่วมกัน */
+        .goal-setting, .payment-input-group {
             display:flex;
             gap:10px;
             align-items:center
         }
 
-        #goalInput, #paymentAmount { /* ใช้ style ร่วมกัน */
+        #goalInput, #paymentAmount {
             flex:1;
             padding:14px;
             border:2px solid #dfe6e9;
@@ -224,7 +225,7 @@
             font-family:'Kanit',sans-serif
         }
         
-        #goalInput:focus, #paymentAmount:focus { /* ใช้ style ร่วมกัน */
+        #goalInput:focus, #paymentAmount:focus {
             border-color:var(--grab-green);
             transform:scale(1.02)
         }
@@ -278,6 +279,7 @@
             <div class="revenue-label">รายรับรวมวันนี้</div>
             <div class="revenue-amount" id="revenue-amount">0 <small>บาท</small></div>
         </div>
+        
         <div class="buttons">
             <div class="company-buttons">
                 <button class="btn btn-lineman" onclick="addOrder('lineman')">
@@ -325,7 +327,6 @@
     </div>
 
     <script>
-        // กำหนดเรทรายได้ต่อออเดอร์
         const REVENUE_RATES = {
             lineman: 24,
             grab: 21
@@ -333,7 +334,6 @@
 
         const initialData = {
             counts: { total: 0, lineman: 0, grab: 0 },
-            // เพิ่ม revenue เข้าไปใน object ข้อมูล
             revenue: 0, 
             lastDate: new Date().toDateString(),
             dailyGoal: 20
@@ -347,18 +347,15 @@
                     let parsedData = JSON.parse(saved);
                     const today = new Date().toDateString();
                     
-                    // รีเซ็ตค่าเมื่อขึ้นวันใหม่
                     if (parsedData.lastDate !== today) {
-                        parsedData = JSON.parse(JSON.stringify(initialData)); // รีเซ็ตเป็นค่าเริ่มต้นทั้งหมด
+                        parsedData = JSON.parse(JSON.stringify(initialData));
                         parsedData.lastDate = today;
                     }
 
-                    // ตรวจสอบโครงสร้างข้อมูลใหม่
                     if (!parsedData.counts) {
                         parsedData.counts = { total: parsedData.today || 0, lineman: 0, grab: 0 };
                         delete parsedData.today;
                     }
-                    // ตรวจสอบว่ามี revenue หรือไม่ ถ้าไม่มีให้ใส่ค่าเริ่มต้น
                     if (parsedData.revenue === undefined) {
                         parsedData.revenue = (parsedData.counts.lineman * REVENUE_RATES.lineman) + (parsedData.counts.grab * REVENUE_RATES.grab);
                     }
@@ -384,9 +381,7 @@
             if (deliveryData.counts.hasOwnProperty(company)) {
                 deliveryData.counts[company]++;
                 deliveryData.counts.total++;
-                // คำนวณรายได้เพิ่ม
                 deliveryData.revenue += REVENUE_RATES[company];
-
                 handleOrderAdded();
             }
         }
@@ -407,7 +402,6 @@
 
         function resetCounter() {
             if (confirm('คุณต้องการรีเซ็ตออเดอร์และรายรับทั้งหมดของวันนี้เป็น 0 หรือไม่?')) {
-                // รีเซ็ตค่าทั้งหมดกลับไปเป็นค่าเริ่มต้น
                 deliveryData.counts = { total: 0, lineman: 0, grab: 0 };
                 deliveryData.revenue = 0;
                 updateDisplay();
@@ -430,15 +424,11 @@
         }
 
         function updateDisplay() {
-            // อัปเดตยอดออเดอร์
             document.getElementById('counterNumber').textContent = deliveryData.counts.total;
             document.getElementById('lineman-count').textContent = deliveryData.counts.lineman;
             document.getElementById('grab-count').textContent = deliveryData.counts.grab;
-
-            // อัปเดตยอดรายรับ
             document.getElementById('revenue-amount').innerHTML = `${deliveryData.revenue.toLocaleString()} <small>บาท</small>`;
             
-            // อัปเดตเป้าหมาย
             const goal = deliveryData.dailyGoal;
             const total = deliveryData.counts.total;
             document.getElementById('currentGoal').textContent = goal;
